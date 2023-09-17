@@ -1,3 +1,5 @@
+# Git ignore
+EODP_TER/
 # Compilation files
 \.gradle
 gradle*\.*
