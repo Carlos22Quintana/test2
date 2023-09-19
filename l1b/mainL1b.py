@@ -8,6 +8,8 @@ auxdir = r'C:\EODP\auxiliary'
 indir = r"C:\EODP\EODP_TER\EODP-TS-L1B\input"
 outdir = r"C:\EODP\EODP_TER\EODP-TS-L1B\outputcarlos"
 
+# Asegurandome de que se commitear y pushear
+
 # Initialise the ISM
 myL1b = l1b(auxdir, indir, outdir)
 myL1b.processModule()
