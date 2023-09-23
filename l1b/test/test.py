@@ -20,6 +20,8 @@ for band in bands:
 
     # 3. Compare
     porcentaje = result/my_toa*100
-    hola =porcentaje < 0.01
-    a=3s
-
+    boolean_comparison = porcentaje < 0.01
+    # np.unique(result/my_toa*100 < 0.01) #demasiado inentendible
+    if boolean_comparison.size == np.count_nonzero(boolean_comparison):
+        print("Yes, the differences with respect to the output TOA (l1b_toa_) are <0.01% for at least 3-sigma of the points.")
+    a = 2
