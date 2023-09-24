@@ -47,7 +47,7 @@ for band in bands:
     # Ploting with Condition if we are equalizing or not
 
     if l1bConfig().do_equalization == True:
-        plt.plot(my_toa_eq[ALT_central_line])
+        plt.plot(my_toa[ALT_central_line])
         plt.plot(isrf_toa[ALT_central_line])
         plt.xlabel('ACT pixel [-]')
         plt.ylabel('TOA [mW/m2/sr]')
@@ -60,7 +60,7 @@ for band in bands:
         plt.plot(isrf_toa[ALT_central_line])
         plt.xlabel('ACT pixel [-]')
         plt.ylabel('TOA [mW/m2/sr]')
-        plt.title("Effect of equalization for " + band)
+        plt.title("Effect of no equalization for " + band)
         plt.legend(['TOA LB1 without eq', 'TOA after the ISRF'])
         plt.savefig("l1b_plot_no_eq" + band + ".png")
         plt.show()
