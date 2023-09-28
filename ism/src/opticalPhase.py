@@ -30,6 +30,8 @@ class opticalPhase(initIsm):
         # Calculation and application of the ISRF
         # -------------------------------------------------------------------------------
         self.logger.info("EODP-ALG-ISM-1010: Spectral modelling. ISRF")
+
+        #isrf, isrf_wv = readIsrf(self.auxdir + self.ismConfig.isrffile, band)
         toa = self.spectralIntegration(sgm_toa, sgm_wv, band)
 
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [e-]")
@@ -93,6 +95,7 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
+        toa = toa*Tr*(np.pi/4)*(D/f)**2 #ATBD Slide 34
         return toa
 
 
@@ -115,6 +118,27 @@ class opticalPhase(initIsm):
         :return: TOA image 2D in radiances [mW/m2]
         """
         # TODO
+        isrf, isrf_wv = readIsrf(self.auxdir + self.ismConfig.isrffile, band)
+        isrf_wv = isrf_wv*1000 # ISRF conversion to nm
+
+        isrf_norm = isrf/np.sum(isrf) # ATBD Slide 33
+
+        toa = np.zeros((sgm_toa.shape[0], sgm_toa.shape[1]))
+        for ialt in range (len(sgm_toa)):
+
+            for iact in range (len(sgm_toa[0])):
+
+                #Declaration interpolation
+                cs = interp1d(sgm_wv, sgm_toa[ialt, iact, :], fill_value=(0, 0), bounds_error=False) # uno en microns y otro en nanometros asi que hay que arreglar eso
+
+                #Interpolation
+                toa_interp = cs(isrf_wv)
+
+                L_vec = toa_interp*isrf_norm #Vector for filtered construct
+
+                toa[ialt,iact] = np.sum(L_vec)  #toa after filter applied
+
+
         return toa
 
 

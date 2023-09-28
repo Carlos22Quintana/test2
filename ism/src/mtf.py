@@ -92,6 +92,24 @@ class mtf:
         :return fnAlt: 1D normalised frequencies 2D ALT (f/(1/w))
         """
         #TODO
+
+        fstepAlt = 1 / nlines / w
+        fstepAct = 1 / ncolumns / w
+
+        eps = 1e-6
+        fAlt = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fstepAlt)
+        fAct = np.arange(-1 / (2 * w), 1 / (2 * w) - eps, fstepAct)
+
+        fnAlt = fAlt / (1/w) # we normalize by the detector size
+        fnAct = fAct / (1/w)
+
+        [fnAltxx, fnActxx] = np.meshgrid(fnAlt, fnAct, indexing='ij')  # Please use ‘ij’ indexing or
+
+        fn2D = np.sqrt(fnAltxx * fnAltxx + fnActxx * fnActxx)
+
+        f_co = D/(lambd*focal) # Slide 46 esta definido
+        fr2D = fn2D* (1/w) / f_co
+
         return fn2D, fr2D, fnAct, fnAlt
 
     def mtfDiffract(self,fr2D):
