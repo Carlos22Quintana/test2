@@ -107,6 +107,7 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
+        #toa_ft = np.convolve(toa,Hsys)
         return toa_ft
 
     def spectralIntegration(self, sgm_toa, sgm_wv, band):
