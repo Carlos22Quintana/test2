@@ -61,9 +61,10 @@ class opticalPhase(initIsm):
                                 self.ismConfig.defocus, self.ismConfig.ksmear, self.ismConfig.kmotion,
                                 self.outdir, band)
 
-        # Apply system MTF
+        # Apply system MTF Slide. 66 GE=fft2(toa)
         toa = self.applySysMtf(toa, Hsys) # always calculated
         self.logger.debug("TOA [0,0] " +str(toa[0,0]) + " [e-]")
+
 
 
 
@@ -107,7 +108,13 @@ class opticalPhase(initIsm):
         :return: TOA image in irradiances [mW/m2]
         """
         # TODO
+        #Slide 66
         #toa_ft = np.convolve(toa,Hsys)
+        GE = fft2(toa)
+
+        toa_ft_freq_dom = GE * fftshift(Hsys)
+        toa_ft_spatial_dom = ifft2(toa_ft_freq_dom)
+        toa_ft = np.real(toa_ft_spatial_dom)
         return toa_ft
 
     def spectralIntegration(self, sgm_toa, sgm_wv, band):
