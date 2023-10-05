@@ -69,7 +69,9 @@ class videoChainPhase(initIsm):
         :return: toa in digital counts
         """
         #TODO
-        #Dijo algo de truncar.....
+        #DHay que truncar para
         toa_dn = np.round(toa/(max_voltage-min_voltage)*(2**bit_depth-1))
+        toa_dn = np.clip(toa_dn, a_min=None, a_max=2**12-1)
+
         return toa_dn
 
