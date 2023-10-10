@@ -96,12 +96,29 @@ for band in bands:
     # the Nyquist frequency. Explain whether this is a decent or mediocre value and why
 
     # Read your outputs
-    my_toa = readMat(luss_toa_path, Hdiff + band + '.nc')
+    my_Hdiff = readMat(luss_toa_path, Hdiff + band + '.nc')
+    #fnAct: 1D normalised frequencies 2D ACT (f/(1/w))
 
     nlines_ALT = my_toa.shape[0]
     ALT_central_line = int(nlines_ALT / 2)
-    nlines_ACT = my_toa.shape[1]
-    ALC_central_line = int(nlines_ALT / 2)
+    #nlines_ACT = my_toa.shape[1]
+    #ALC_central_line = int(nlines_ALT / 2)
+
+    plt.plot(my_Hdiff[ALT_central_line])
+    plt.xlabel('ACT pixel [-]')
+    plt.ylabel('TOA [mW/m2/sr]')
+    plt.title("Effect of equalization for " + band)
+    plt.show()
+    A=2
+
+    #plt.plot(my_toa[ALT_central_line])
+    #plt.plot(isrf_toa[ALT_central_line])
+    #plt.xlabel('ACT pixel [-]')
+    #plt.ylabel('TOA [mW/m2/sr]')
+    #plt.title("Effect of equalization for " + band)
+    #plt.legend(['TOA LB1 with eq', 'TOA after the ISRF'])
+    #plt.savefig("l1b_plot_eq" + band + ".png")  # Save and show tiene que ser este orden porque si no peta
+    #plt.show()  # Si no le pongo el show tambien peta
 
 
 

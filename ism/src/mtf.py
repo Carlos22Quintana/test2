@@ -220,4 +220,22 @@ class mtf:
         """
         #TODO
 
+        nlines_ALT = Hdiff.shape[0]
+        ALT_central_line = int(nlines_ALT / 2)
+        # nlines_ACT = my_toa.shape[1]
+        # ALC_central_line = int(nlines_ALT / 2)
+
+        plt.plot(fnAct, Hdiff[ALT_central_line])
+        plt.plot(fnAct, Hdefoc[ALT_central_line])
+        plt.plot(fnAct, Hwfe[ALT_central_line])
+        plt.plot(fnAct, Hdet[ALT_central_line])
+        plt.plot(fnAct, Hsmear[ALT_central_line])
+        plt.plot(fnAct, Hmotion[ALT_central_line])
+        plt.plot(fnAct, Hsys[ALT_central_line])
+        plt.xlabel('Spatial frequencies f/(1/w) [-]')
+        plt.ylabel('MTF')
+        plt.title("System MTF slice ALT for " + band)
+        plt.legend(['Hdiff', 'Hdefoc', 'Hwfe', 'Hwfe', 'Hsmear', 'Hmotion', 'Hsys'])
+        plt.show()
+        a=2
 
