@@ -3,6 +3,7 @@ import pandas as pd
 
 from common.io.writeToa import readToa
 from common.io.readMat import readMat
+from common.io.readArray import readArray
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -24,6 +25,7 @@ Hdet = 'Hdet_'
 Hsmear = 'Hsmear_'
 Hmotion = 'Hmotion_'
 Hsys = 'Hsys_'
+fnAct = 'fnAct_'
 
 for band in bands:
 
@@ -91,25 +93,45 @@ for band in bands:
                   ") are not all <0.01% for at least 3-sigma of the points.")
 
     # What is the radiance to irradiance conversion factor for each band. What are the units of the TOA at this stage.
+    # Slide 34
+
 
     # Plot for all bands the System MTF across and along track (for the central pixels). Report the MTF at
     # the Nyquist frequency. Explain whether this is a decent or mediocre value and why
 
     # Read your outputs
-    my_Hdiff = readMat(luss_toa_path, Hdiff + band + '.nc')
+    my_Hdiff = readMat(my_toa_path, Hdiff + band + '.nc')
+    my_Hdefoc = readMat(my_toa_path, Hdefoc + band + '.nc')
+    my_Hwfe = readMat(my_toa_path, Hwfe + band + '.nc')
+    my_Hdet = readMat(my_toa_path, Hdet + band + '.nc')
+    my_Hsmear = readMat(my_toa_path, Hsmear + band + '.nc')
+    my_Hmotion = readMat(my_toa_path, Hmotion + band + '.nc')
+    my_Hsys = readMat(my_toa_path, Hsys + band + '.nc')
+    my_fnAct = readArray(my_toa_path, fnAct + band + '.nc')
+
     #fnAct: 1D normalised frequencies 2D ACT (f/(1/w))
-
-    nlines_ALT = my_toa.shape[0]
+    nlines_ALT = my_Hdiff.shape[0]
     ALT_central_line = int(nlines_ALT / 2)
-    #nlines_ACT = my_toa.shape[1]
-    #ALC_central_line = int(nlines_ALT / 2)
 
-    plt.plot(my_Hdiff[ALT_central_line])
-    plt.xlabel('ACT pixel [-]')
-    plt.ylabel('TOA [mW/m2/sr]')
-    plt.title("Effect of equalization for " + band)
+    plt.plot(my_fnAct, my_Hdiff[ALT_central_line])
+    plt.plot(my_fnAct, my_Hdefoc[ALT_central_line])
+    plt.plot(my_fnAct, my_Hwfe[ALT_central_line])
+    plt.plot(my_fnAct, my_Hdet[ALT_central_line])
+    plt.plot(my_fnAct, my_Hsmear[ALT_central_line])
+    plt.plot(my_fnAct, my_Hmotion[ALT_central_line])
+    plt.plot(my_fnAct, my_Hsys[ALT_central_line], color='black', linewidth=2.5)
+    plt.plot(np.full(2, 0.5), np.linspace(0, 1, 2), linestyle='--', color='black')
+    plt.xlabel('Spatial frequencies f/(1/w) [-]')
+    plt.ylabel('MTF')
+    plt.title("System MTF slice ALT for " + band)
+    plt.legend(['Diffraction MTF', 'Defocus MTF', 'WFE Aberration MTF', 'Detector MTF', 'Smearing MTF', 'Motion blur MTF', 'System MTF','f Nyquist'])
+    plt.xlim(-0.025, 0.525)
+    plt.ylim(-0.025, 1.025)
+    plt.savefig("ism_plot_MTF_" + band + ".png")
     plt.show()
-    A=2
+
+    a = 2
+
 
     #plt.plot(my_toa[ALT_central_line])
     #plt.plot(isrf_toa[ALT_central_line])

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.special import j1
 from numpy.matlib import repmat
 from common.io.readMat import writeMat
+from common.io.readArray import writeArray
 from common.plot.plotMat2D import plotMat2D
 from scipy.interpolate import interp2d
 from numpy.fft import fftshift, ifft2
@@ -75,6 +76,15 @@ class mtf:
         # Plot cuts ACT/ALT of the MTF
         self.plotMtf(Hdiff, Hdefoc, Hwfe, Hdet, Hsmear, Hmotion, Hsys, nlines, ncolumns, fnAct, fnAlt, directory, band)
 
+        writeMat(self.outdir, 'Hdiff_' + band, Hdiff)
+        writeMat(self.outdir, 'Hdefoc_' + band, Hdefoc)
+        writeMat(self.outdir, 'Hwfe_' + band, Hwfe)
+        writeMat(self.outdir, 'Hdet_' + band, Hdet)
+        writeMat(self.outdir, 'Hsmear_' + band, Hsmear)
+        writeMat(self.outdir, 'Hmotion_' + band, Hmotion)
+        writeMat(self.outdir, 'Hsys_' + band, Hsys)
+        writeArray(self.outdir, 'fnAct_' + band, fnAct)
+        #writeMat(self.outdir, 'fnAlt_' + band, fnAlt)
 
         return Hsys
 
@@ -220,22 +230,22 @@ class mtf:
         """
         #TODO
 
-        nlines_ALT = Hdiff.shape[0]
-        ALT_central_line = int(nlines_ALT / 2)
+        # Lo tengo hecho donde el test ISM
+        #nlines_ALT = Hdiff.shape[0]
+        #ALT_central_line = int(nlines_ALT / 2)
         # nlines_ACT = my_toa.shape[1]
         # ALC_central_line = int(nlines_ALT / 2)
 
-        plt.plot(fnAct, Hdiff[ALT_central_line])
-        plt.plot(fnAct, Hdefoc[ALT_central_line])
-        plt.plot(fnAct, Hwfe[ALT_central_line])
-        plt.plot(fnAct, Hdet[ALT_central_line])
-        plt.plot(fnAct, Hsmear[ALT_central_line])
-        plt.plot(fnAct, Hmotion[ALT_central_line])
-        plt.plot(fnAct, Hsys[ALT_central_line])
-        plt.xlabel('Spatial frequencies f/(1/w) [-]')
-        plt.ylabel('MTF')
-        plt.title("System MTF slice ALT for " + band)
-        plt.legend(['Hdiff', 'Hdefoc', 'Hwfe', 'Hwfe', 'Hsmear', 'Hmotion', 'Hsys'])
-        plt.show()
-        a=2
+        #plt.plot(fnAct, Hdiff[ALT_central_line])
+        #plt.plot(fnAct, Hdefoc[ALT_central_line])
+        #plt.plot(fnAct, Hwfe[ALT_central_line])
+        #plt.plot(fnAct, Hdet[ALT_central_line])
+        #plt.plot(fnAct, Hsmear[ALT_central_line])
+        #plt.plot(fnAct, Hmotion[ALT_central_line])
+        #plt.plot(fnAct, Hsys[ALT_central_line])
+        #plt.xlabel('Spatial frequencies f/(1/w) [-]')
+        #plt.ylabel('MTF')
+        #plt.title("System MTF slice ALT for " + band)
+        #plt.legend(['Hdiff', 'Hdefoc', 'Hwfe', 'Hwfe', 'Hsmear', 'Hmotion', 'Hsys'])
+        #a=2
 
