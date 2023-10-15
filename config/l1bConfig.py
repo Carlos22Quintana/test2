@@ -8,7 +8,7 @@ class l1bConfig:
     def __init__(self):
 
         # Flags to enable or disable the equalization
-        self.do_equalization = False # Esto lo tenemos que cambiar a false y correr otra vez haciendo otra carpeta para myoutputs false
+        self.do_equalization = True # Esto lo tenemos que cambiar a false y correr otra vez haciendo otra carpeta para myoutputs false
 
         # Auxiliary inputs (relative paths to the root folder)
         #--------------------------------------------------------------------------------

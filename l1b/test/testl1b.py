@@ -2,6 +2,7 @@
 
 from common.io.writeToa import readToa
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from config import globalConfig
 from config.l1bConfig import l1bConfig
@@ -27,10 +28,21 @@ for band in bands:
 
     # 3. Compare
     result = my_toa - luss_toa
-    porcentaje = result/my_toa*100
-    boolean_comparison = porcentaje < 0.01
-    # np.unique(result/my_toa*100 < 0.01) #demasiado inentendible
-    if boolean_comparison.size == np.count_nonzero(boolean_comparison):
+    porcentaje = result / my_toa * 100
+    df = pd.DataFrame(porcentaje)
+    porcentaje_df = df.fillna(0)  # The division per zero gives some annoying NaN values
+    boolean_comparison = np.array(porcentaje_df < 0.01)
+
+    # Calculate the total number of values in each matrix
+    total_values = boolean_comparison.size
+    trues_matrix = np.full(boolean_comparison.shape, True)
+    # Calculate the number of matching values (True values in the same positions)
+    matching_values = np.sum(boolean_comparison == trues_matrix)
+    # Calculate the threshold for 99.7% (3sigma) matching values
+    threshold = 0.997 * total_values
+    # Apply threshold to the matching values
+    is_3sigma = matching_values >= threshold
+    if is_3sigma == True:
         print("Yes, the differences with respect to the output TOA (", l1b_toa + band,") are <0.01% for at least 3-sigma of the points.")
     else:
         print("No!, the differences with respect to the output TOA (", l1b_toa + band,") are not all <0.01% for at least 3-sigma of the points.")

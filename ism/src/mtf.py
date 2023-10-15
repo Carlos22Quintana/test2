@@ -84,7 +84,7 @@ class mtf:
         writeMat(self.outdir, 'Hmotion_' + band, Hmotion)
         writeMat(self.outdir, 'Hsys_' + band, Hsys)
         writeArray(self.outdir, 'fnAct_' + band, fnAct)
-        #writeMat(self.outdir, 'fnAlt_' + band, fnAlt)
+        writeArray(self.outdir, 'fnAlt_' + band, fnAlt)
 
         return Hsys
 

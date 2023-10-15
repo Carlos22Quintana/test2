@@ -26,6 +26,7 @@ Hsmear = 'Hsmear_'
 Hmotion = 'Hmotion_'
 Hsys = 'Hsys_'
 fnAct = 'fnAct_'
+fnAlt = 'fnAlt_'
 
 for band in bands:
 
@@ -108,26 +109,52 @@ for band in bands:
     my_Hmotion = readMat(my_toa_path, Hmotion + band + '.nc')
     my_Hsys = readMat(my_toa_path, Hsys + band + '.nc')
     my_fnAct = readArray(my_toa_path, fnAct + band + '.nc')
+    my_fnAlt = readArray(my_toa_path, fnAlt + band + '.nc')
 
     #fnAct: 1D normalised frequencies 2D ACT (f/(1/w))
     nlines_ALT = my_Hdiff.shape[0]
-    ALT_central_line = int(nlines_ALT / 2)
+    ACT_central_line = int(nlines_ALT / 2)
+    nlines_ACT = my_Hdiff.shape[1]
+    ALT_central_line = int(nlines_ACT / 2)
 
-    plt.plot(my_fnAct, my_Hdiff[ALT_central_line])
-    plt.plot(my_fnAct, my_Hdefoc[ALT_central_line])
-    plt.plot(my_fnAct, my_Hwfe[ALT_central_line])
-    plt.plot(my_fnAct, my_Hdet[ALT_central_line])
-    plt.plot(my_fnAct, my_Hsmear[ALT_central_line])
-    plt.plot(my_fnAct, my_Hmotion[ALT_central_line])
-    plt.plot(my_fnAct, my_Hsys[ALT_central_line], color='black', linewidth=2.5)
+
+    # ACT
+    plt.plot(my_fnAct[75:150], my_Hdiff[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hdefoc[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hwfe[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hdet[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hsmear[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hmotion[ACT_central_line, 75:150])
+    plt.plot(my_fnAct[75:150], my_Hsys[ACT_central_line, 75:150], color='black', linewidth=2.5)
     plt.plot(np.full(2, 0.5), np.linspace(0, 1, 2), linestyle='--', color='black')
     plt.xlabel('Spatial frequencies f/(1/w) [-]')
     plt.ylabel('MTF')
-    plt.title("System MTF slice ALT for " + band)
+    plt.title("System MTF, slice ACT for " + band + " (for the central pixels of ALT)")
     plt.legend(['Diffraction MTF', 'Defocus MTF', 'WFE Aberration MTF', 'Detector MTF', 'Smearing MTF', 'Motion blur MTF', 'System MTF','f Nyquist'])
     plt.xlim(-0.025, 0.525)
     plt.ylim(-0.025, 1.025)
-    plt.savefig("ism_plot_MTF_" + band + ".png")
+    plt.savefig("ism_plot_MTF_ACT_" + band + ".png")
+    plt.show()
+
+
+    # ALT
+    plt.plot(my_fnAlt[50:100], my_Hdiff[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hdefoc[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hwfe[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hdet[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hsmear[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hmotion[50:100, ALT_central_line])
+    plt.plot(my_fnAlt[50:100], my_Hsys[50:100, ALT_central_line], color='black', linewidth=2.5)
+    plt.plot(np.full(2, 0.5), np.linspace(0, 1, 2), linestyle='--', color='black')
+    plt.xlabel('Spatial frequencies f/(1/w) [-]')
+    plt.ylabel('MTF')
+    plt.title("System MTF, slice ALT for " + band + " (for the central pixels of ACT)")
+    plt.legend(
+        ['Diffraction MTF', 'Defocus MTF', 'WFE Aberration MTF', 'Detector MTF', 'Smearing MTF', 'Motion blur MTF',
+         'System MTF', 'f Nyquist'])
+    plt.xlim(-0.025, 0.525)
+    plt.ylim(-0.025, 1.025)
+    plt.savefig("ism_plot_MTF_ALT_" + band + ".png")
     plt.show()
 
     a = 2
