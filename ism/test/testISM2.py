@@ -61,4 +61,3 @@ for band in bands:
     number_saturated_values = np.sum(my_toa == 4095)
     porcentaje_saturated = number_saturated_values * 100 / my_toa.size
     print("The percentage of saturated values for", ism_toa_ + band,"is", "{:.2f}".format(porcentaje_saturated), "%.")
-    a=2
