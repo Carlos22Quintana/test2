@@ -193,7 +193,7 @@ class mtf:
         #TODO
         #Slide 60
         #vamos a repetirlo para los 150 colums
-        Hsmear = np.zeros((100, 150))
+        Hsmear = np.zeros((len(fnAlt),ncolumns))
         for iAlt in range (ncolumns):
             Hsmear[:, iAlt] = np.sinc(ksmear*fnAlt)
         return Hsmear
