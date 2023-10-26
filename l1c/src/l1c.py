@@ -38,6 +38,9 @@ class l1c(initL1c):
             # -------------------------------------------------------------------------------
             writeL1c(self.outdir, self.globalConfig.l1c_toa + band, lat_l1c, lon_l1c, toa_l1c)
 
+            # Plot results
+            self.plotL1cToa(lat_l1c, lon_l1c, toa_l1c, band)
+
             self.logger.info("End of BAND " + band)
 
         self.logger.info("End of the L1C Module!")
@@ -63,7 +66,25 @@ class l1c(initL1c):
         :return: L1C radiances, L1C latitude and longitude in degrees
         '''
         #TODO
+
+        tck = bisplrep(lat, lon, toa)
+        mgrs_tiles = set([])
+        m = mgrs.MGRS()
+        #mg_mgrs = np.zeros((lat.shape[0], lat.shape[1]))
+        for i in range(lat.shape[0]):
+            for j in range(lat.shape[1]):
+                mgrs_tiles.add(str(m.toMGRS(lat[i, j], lon[i, j],True, self.l1cConfig.mgrs_tile_precision)))
+
+        mgrs_tiles = list(mgrs_tiles)
+        lat_l1c = np.zeros(len(mgrs_tiles))
+        lon_l1c = np.zeros(len(mgrs_tiles))
+        toa_l1c = np.zeros(len(mgrs_tiles))
+        for i in range(len(mgrs_tiles)):
+            lat_l1c[i], lon_l1c[i] = m.toLatLon(mgrs_tiles[i], True)
+            toa_l1c[i] = bisplev(lat_l1c[i], lon_l1c[i], tck)
+        toa_2 = np.sort(toa_l1c)
         return lat_l1c, lon_l1c, toa_l1c
+
 
     def checkSize(self, lat,toa):
         '''
@@ -73,4 +94,27 @@ class l1c(initL1c):
         :param toa: Radiance 2D matrix
         :return: NA
         '''
+
+        if lat.shape[0] != toa.shape[0] or lat.shape[1] != toa.shape[1]:
+            print('Becarefull, different size arrays')
         #TODO
+
+    def plotL1cToa(self, lat_l1c, lon_l1c, toa_l1c, band):
+        jet = cm.get_cmap('jet', len(lat_l1c))
+        toa_l1c[np.argwhere(toa_l1c < 0)] = 0
+        max_toa = np.max(toa_l1c)
+        # Plot stuff
+        fig = plt.figure(figsize=(20, 10))
+        clr = np.zeros(len(lat_l1c))
+        for ii in range(len(lat_l1c)):
+            clr = jet(toa_l1c[ii] / max_toa)
+            plt.plot(lon_l1c[ii], lat_l1c[ii], '.', color=clr, markersize=10)
+        plt.title('Projection on ground', fontsize=20)
+        plt.xlabel('Longitude [deg]', fontsize=16)
+        plt.ylabel('Latitude [deg]', fontsize=16)
+        plt.grid()
+        plt.axis('equal')
+        plt.savefig(self.outdir + 'toa_' + band + '.png')
+        plt.close(fig)
+
+        a=3
