@@ -116,5 +116,3 @@ class l1c(initL1c):
         plt.axis('equal')
         plt.savefig(self.outdir + 'toa_' + band + '.png')
         plt.close(fig)
-
-        a=3
